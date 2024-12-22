@@ -17,13 +17,19 @@ class KNN:
         return predictions
     
     def _predict(self, x):
-        
+        # Menghitung jarak  antara test dengan semua sample training
         distances = [euclidean_distance(x, x_train) for x_train in self.X_train]
     
-        
+        # Mendapatkan indeks k tetantanga terdekat
         k_indices = np.argsort(distances)[:self.k]
         k_nearest_labels = [self.y_train[i] for i in k_indices]
 
-        
+        # Voting mayoritas
         most_common = Counter(k_nearest_labels).most_common()
-        return most_common[0][0]
+
+        # Penanganan kasus tie (mengembalikan label terkecil jika seri)
+        max_count = most_common[0][1]
+        tied_labels = [label for label, count in most_common if count == max_count]
+        return min(tied_labels)
+
+    
