@@ -1,35 +1,36 @@
 import numpy as np
-from collections import Counter
 
-def euclidean_distance(x1, x2):
-    return np.sqrt(np.sum((x1 - x2) ** 2))
+class KNN(object):
+    def __init__(self):
+        pass
 
-class KNN:
-    def __init__(self, k=3):
-        self.k = k
-
-    def fit(self, X, y):
+    def train(self, X, y):
         self.X_train = X
         self.y_train = y
 
-    def predict(self, X):
-        predictions = [self._predict(x) for x in X]
-        return predictions
-    
-    def _predict(self, x):
-        # Menghitung jarak  antara test dengan semua sample training
-        distances = [euclidean_distance(x, x_train) for x_train in self.X_train]
-    
-        # Mendapatkan indeks k tetantanga terdekat
-        k_indices = np.argsort(distances)[:self.k]
-        k_nearest_labels = [self.y_train[i] for i in k_indices]
+    def predict(self, X, k=1, num_loops=0):
+        if num_loops == 0:
+            dists = self.compute_distances(X)
+        else:
+            raise ValueError('Invalid value %d for num_loops' % num_loops)
+        return self.predict_labels(dists, k=k)
 
-        # Voting mayoritas
-        most_common = Counter(k_nearest_labels).most_common()
+    def compute_distances(self, X):
+        num_test = X.shape[0]
+        num_train = self.X_train.shape[0]
+        dists = np.zeros((num_test, num_train))
+        dists = np.sqrt(np.sum(np.square(self.X_train), axis=1) +
+                        np.sum(np.square(X), axis=1)[:, np.newaxis] -
+                        2 * np.dot(X, self.X_train.T))
+        return dists
 
-        # Penanganan kasus tie (mengembalikan label terkecil jika seri)
-        max_count = most_common[0][1]
-        tied_labels = [label for label, count in most_common if count == max_count]
-        return min(tied_labels)
-
+    def predict_labels(self, dists, k=1):
+        num_test = dists.shape[0]
+        y_pred = np.zeros(num_test)
+        for i in range(num_test):
+            # Mendapatkan k tetangga terdekat
+            closest_y = self.y_train[np.argsort(dists[i])[:k]]
+            # Memilih label yang paling sering muncul
+            y_pred[i] = np.argmax(np.bincount(closest_y))
+        return y_pred
     
