@@ -10,7 +10,7 @@ class GaussianNB:
         self.priors = {}  
 
     def fit(self, X, y):
-        # Melatih model dengan menghitung mean, variansi, dan prior untuk setiap kelas.
+        # Melatih model dengan menghitung mea, variansi, dan prior untuk setiap kelas.
         self.classes = np.unique(y)  
         for cls in self.classes:
             X_cls = X[y == cls] 
