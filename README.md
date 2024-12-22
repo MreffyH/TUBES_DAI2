@@ -8,7 +8,7 @@ Repository ini berisi proyek dengan folder `src` untuk kode utama (`main.ipynb`)
 ## Pembagian Tugas
 | NIM Anggota | Tugas                                               |
 |-------------|-----------------------------------------------------|
-| 18222103    | Data Splitting, Preprocessing (Feature Engineering), Compile Preprocessing Pipeline |
+| 18222103    | Data Splitting, Preprocessing (Feature Engineering), Compile Preprocessing Pipeline, Error Analysis |
 | 18222119    | Data Cleaning dan Preprocessing, KNN                |
 | 18222122    | KNN                                                 |
-| 18222131    | Naive Bayes, Error Analysis, Setup Laporan                          |
+| 18222131    | Naive Bayes, Setup Laporan                          |
